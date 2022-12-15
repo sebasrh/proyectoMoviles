@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "615738260899",
+    "firebase_url": "https://seerooms-63da8-default-rtdb.firebaseio.com",
+    "project_id": "seerooms-63da8",
+    "storage_bucket": "seerooms-63da8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615738260899:android:48450b2f9291143a272e16",
+        "android_client_info": {
+          "package_name": "com.example.seerooms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615738260899-kk5v4sdu6trmi2ar93189gb8icu91pm2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7ZDzkPLEjuyEDqZYQlTg6rB1W8gwQayI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615738260899-kk5v4sdu6trmi2ar93189gb8icu91pm2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "615738260899-qo1qr8e9ol3j0n3dm1uv6q1fvosr8n93.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.seerooms"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
