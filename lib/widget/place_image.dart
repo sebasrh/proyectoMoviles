@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class PlaceImage extends StatelessWidget {
@@ -16,16 +18,7 @@ class PlaceImage extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(45), topRight: Radius.circular(45)),
-          child: this.url == null
-              ? Image(
-                  image: AssetImage('assets/no-image.png'),
-                  fit: BoxFit.cover,
-                )
-              : FadeInImage(
-                  image: NetworkImage(this.url!),
-                  placeholder: AssetImage('assets/jar-loading.gif'),
-                  fit: BoxFit.cover,
-                ),
+          child: getImage(url),
         ),
       ),
     );
@@ -35,4 +28,23 @@ class PlaceImage extends StatelessWidget {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(45), topRight: Radius.circular(45)),
       );
+
+  Widget getImage(String? photo) {
+    if (photo == null)
+      return Image(
+        image: AssetImage('assets/no-image.png'),
+        fit: BoxFit.cover,
+      );
+    if (photo.startsWith('http'))
+      return FadeInImage(
+        image: NetworkImage(this.url!),
+        placeholder: AssetImage('assets/jar-loading.gif'),
+        fit: BoxFit.cover,
+      );
+
+    return Image.file(
+      File(photo),
+      fit: BoxFit.cover,
+    );
+  }
 }

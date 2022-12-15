@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: const Color(0xFFFFFB00),
         titleTextStyle:
             const TextStyle(fontFamily: 'Lato', color: Colors.black),
-        title: Text('Apartamentos'),
+        title: Text('SeeRooms'),
         leading: IconButton(
           icon: const Icon(Icons.login_outlined, color: Colors.black),
           onPressed: () {
@@ -51,8 +51,7 @@ class HomePage extends StatelessWidget {
               neighborhood: '',
               numberPhone: '',
               owner: '',
-              price: '',
-              photo: '');
+              price: '');
           Navigator.pushNamed(context, 'place_page');
         },
         child: const Icon(Icons.add, color: Colors.black),

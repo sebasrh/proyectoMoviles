@@ -13,7 +13,7 @@ class PlaceModel {
     required this.neighborhood,
     required this.numberPhone,
     required this.owner,
-    required this.photo,
+    this.photo,
     required this.price,
     this.id,
   });
@@ -25,7 +25,7 @@ class PlaceModel {
   String neighborhood;
   String numberPhone;
   String owner;
-  String photo;
+  String? photo;
   String price;
   String? id;
 

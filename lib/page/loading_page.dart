@@ -7,7 +7,7 @@ class LoadingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Apartamentos"),
+        title: Text("SeeRooms"),
       ),
       body: Center(
           child: CircularProgressIndicator(
