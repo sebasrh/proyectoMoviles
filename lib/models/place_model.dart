@@ -13,7 +13,7 @@ class PlaceModel {
     required this.neighborhood,
     required this.numberPhone,
     required this.owner,
-    this.photos,
+    required this.photo,
     required this.price,
     this.id,
   });
@@ -25,7 +25,7 @@ class PlaceModel {
   String neighborhood;
   String numberPhone;
   String owner;
-  List<String>? photos;
+  String photo;
   String price;
   String? id;
 
@@ -42,7 +42,7 @@ class PlaceModel {
         neighborhood: json["neighborhood"],
         numberPhone: json["numberPhone"],
         owner: json["owner"],
-        photos: List<String>.from(json["photos"].map((x) => x)),
+        photo: json["photo"],
         price: json["price"],
       );
 
@@ -54,19 +54,20 @@ class PlaceModel {
         "neighborhood": neighborhood,
         "numberPhone": numberPhone,
         "owner": owner,
-        "photos": List<dynamic>.from(photos!.map((x) => x)),
+        "photo": photo,
         "price": price,
       };
+
   PlaceModel copy() => PlaceModel(
-        address: address,
-        available: available,
-        city: city,
-        departament: departament,
-        neighborhood: neighborhood,
-        numberPhone: numberPhone,
-        owner: owner,
-        photos: photos,
-        price: price,
-        id: id,
+        address: this.address,
+        available: this.available,
+        city: this.city,
+        departament: this.departament,
+        neighborhood: this.neighborhood,
+        numberPhone: this.numberPhone,
+        owner: this.owner,
+        photo: this.photo,
+        price: this.price,
+        id: this.id,
       );
 }

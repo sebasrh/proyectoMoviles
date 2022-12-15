@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
               numberPhone: '',
               owner: '',
               price: '',
-              photos: []);
+              photo: '');
           Navigator.pushNamed(context, 'place_page');
         },
         child: const Icon(Icons.add, color: Colors.black),

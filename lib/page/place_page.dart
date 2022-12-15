@@ -9,6 +9,8 @@ class PlacePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlacePage place;
+    final placeService = Provider.of<PlaceService>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
           child: Column(

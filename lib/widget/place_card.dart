@@ -18,7 +18,7 @@ class PlaceCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: [
-            _BackgroundImage(place.photos![0]),
+            _BackgroundImage(place.photo),
             _PlaceDetails(
               ciudad: "Ciudad: ${place.city}",
               precio: "Precio: ${place.price}",
