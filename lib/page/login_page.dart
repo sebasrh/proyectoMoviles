@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               TextField(
+                cursorColor: Colors.deepPurple,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
                     hintText: 'Email',
@@ -57,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
               TextField(
                 obscureText: true,
+                cursorColor: Colors.deepPurple,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
                     hintText: 'Password',
@@ -168,12 +170,12 @@ class _LoginPageState extends State<LoginPage> {
               const Divider(
                 height: 40.0,
               ),
-              const Text('or sing in whit'),
+              const Text('or sign in whit'),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
                   padding: MaterialStateProperty.all(
                     EdgeInsets.zero,
                   ),

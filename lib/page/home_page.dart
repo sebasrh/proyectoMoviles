@@ -17,7 +17,6 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        
         backgroundColor: Colors.deepPurple,
         titleTextStyle:
             const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),

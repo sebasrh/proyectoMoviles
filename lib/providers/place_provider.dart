@@ -8,6 +8,11 @@ class PlaceFormProvider extends ChangeNotifier {
 
   PlaceFormProvider(this.place);
 
+  updateAvailability(bool value) {
+    place!.available = value;
+    notifyListeners();
+  }
+
   bool isValidForm() {
     return formKey.currentState?.validate() ?? false;
   }

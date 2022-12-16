@@ -7,10 +7,10 @@ import 'package:image_picker/image_picker.dart';
 import '../services/services.dart';
 
 class PlacePage extends StatelessWidget {
+  const PlacePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    PlacePage place;
-
     final placeService = Provider.of<PlaceService>(context);
 
     return ChangeNotifierProvider(
@@ -43,83 +43,75 @@ class _PlacePageBody extends StatelessWidget {
         title: const Text('SeeRooms'),
       ),
       body: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           child: Column(
-        children: [
-          Stack(
             children: [
-              PlaceImage(url: placeService.selectedPlace!.photo),
-              Positioned(
-                top: 20,
-                right: 20,
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.deepPurple,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.photo,
-                      color: Colors.white,
+              Stack(
+                children: [
+                  PlaceImage(url: placeService.selectedPlace!.photo),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.deepPurple,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.photo,
+                          color: Colors.white,
+                        ),
+                        onPressed: () async {
+                          final picker = ImagePicker();
+
+                          final PickedFile? pickedFile = await picker.getImage(
+                              source: ImageSource.gallery, imageQuality: 100);
+
+                          if (pickedFile == null) {
+                            return;
+                          }
+                          placeService
+                              .updateSelectedProductImage(pickedFile.path);
+                        },
+                      ),
                     ),
-                    onPressed: () async {
-                      final picker = ImagePicker();
-
-                      final PickedFile? pickedFile = await picker.getImage(
-                          source: ImageSource.gallery, imageQuality: 100);
-
-                      if (pickedFile == null) {
-                        return;
-                      }
-                      placeService.updateSelectedProductImage(pickedFile.path);
-                    },
                   ),
-                ),
-              ),
-              Positioned(
-                top: 100,
-                right: 20,
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.deepPurple,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.camera_alt_outlined,
-                      color: Colors.white,
+                  Positioned(
+                    top: 100,
+                    right: 20,
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.deepPurple,
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.camera_alt_outlined,
+                          color: Colors.white,
+                        ),
+                        onPressed: () async {
+                          final picker = ImagePicker();
+
+                          final PickedFile? pickedFile = await picker.getImage(
+                              source: ImageSource.camera, imageQuality: 100);
+
+                          if (pickedFile == null) {
+                            return;
+                          }
+                          placeService
+                              .updateSelectedProductImage(pickedFile.path);
+                        },
+                      ),
                     ),
-                    onPressed: () async {
-                      final picker = ImagePicker();
-
-                      final PickedFile? pickedFile = await picker.getImage(
-                          source: ImageSource.camera, imageQuality: 100);
-
-                      if (pickedFile == null) {
-                        return;
-                      }
-                      placeService.updateSelectedProductImage(pickedFile.path);
-                    },
                   ),
-                ),
+                ],
               ),
+              _PlaceForm(),
+              const SizedBox(height: 50),
             ],
-          ),
-          _PlaceForm(),
-          const SizedBox(height: 50),
-        ],
-      )),
+          )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurple,
         child: const Icon(Icons.save_outlined),
         onPressed: () async {
           if (!placeForm.isValidForm()) return;
-
-          final String? imageUrl = await placeService.uploadImage();
-
-          if (imageUrl != null) {
-            placeForm.place!.photo = imageUrl;
-          } else {
-            placeForm.place!.photo =
-                'http://res.cloudinary.com/dgb26cwpx/image/upload/v1671170908/ko6jupcznbcd2e395msh.png';
-          }
-
-          await placeService.saveOrCreatePlace(placeForm.place!);
 
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -142,6 +134,12 @@ class _PlacePageBody extends StatelessWidget {
                 ],
               )),
             )));
+
+          final String? imageUrl = await placeService.uploadImage();
+
+          if (imageUrl != null) placeForm.place!.photo = imageUrl;
+
+          await placeService.saveOrCreatePlace(placeForm.place!);
         },
       ),
     );
@@ -161,69 +159,175 @@ class _PlaceForm extends StatelessWidget {
         decoration: _buildBoxDecoration(),
         child: Form(
           key: placeForm.formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          //autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               const SizedBox(height: 10),
+              SwitchListTile.adaptive(
+                  value: placeForm.place!.available,
+                  tileColor: Colors.grey,
+                  title: const Text('Disponible'),
+                  activeColor: Colors.deepPurple,
+                  onChanged: placeForm.updateAvailability),
+              const SizedBox(height: 10),
               TextFormField(
+                initialValue: placeForm.place!.owner,
+                cursorColor: Colors.deepPurple,
+                decoration: InputDecoration(
+                    hintText: 'Nombre del propietario',
+                    label: const Text('Nombre del propietario'),
+                    labelStyle: const TextStyle(color: Colors.deepPurple),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
                 onChanged: (value) {
                   placeForm.place!.owner = value;
                 },
-                decoration: const InputDecoration(
-                  hintText: 'Nombre del propietario',
-                  labelText: 'Nombre del propietario:',
-                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Este campo es obligatorio';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: placeForm.place!.numberPhone,
                 onChanged: (value) => placeForm.place!.numberPhone = value,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Este campo es obligatorio';
+                  }
+                  return null;
+                },
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  hintText: 'Numero de celular',
-                  labelText: 'Numero de celular:',
-                ),
+                cursorColor: Colors.deepPurple,
+                decoration: InputDecoration(
+                    hintText: 'Número de celular',
+                    label: const Text('Número de celular'),
+                    labelStyle: const TextStyle(color: Colors.deepPurple),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
               ),
               const SizedBox(height: 10),
               TextFormField(
-                  onChanged: (value) => placeForm.place!.price = value,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    hintText: 'Precio del hospedaje',
-                    labelText: 'Precio:',
-                  )),
+                initialValue: placeForm.place!.price,
+                onChanged: (value) => placeForm.place!.price = value,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Este campo es obligatorio';
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.number,
+                cursorColor: Colors.deepPurple,
+                decoration: InputDecoration(
+                    hintText: 'Precio',
+                    label: const Text('Precio'),
+                    labelStyle: const TextStyle(color: Colors.deepPurple),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
+              ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: placeForm.place!.departament,
                 onChanged: (value) => placeForm.place!.departament = value,
-                decoration: const InputDecoration(
-                  hintText: 'Departamento',
-                  labelText: 'Departamento:',
-                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Este campo es obligatorio';
+                  }
+                  return null;
+                },
+                cursorColor: Colors.deepPurple,
+                decoration: InputDecoration(
+                    hintText: 'Departamento',
+                    label: const Text('Departamento'),
+                    labelStyle: const TextStyle(color: Colors.deepPurple),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: placeForm.place!.city,
                 onChanged: (value) => placeForm.place!.city = value,
-                decoration: const InputDecoration(
-                  hintText: 'Ciudad',
-                  labelText: 'Ciudad:',
-                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Este campo es obligatorio';
+                  }
+                  return null;
+                },
+                cursorColor: Colors.deepPurple,
+                decoration: InputDecoration(
+                    hintText: 'Ciudad',
+                    label: const Text('Ciudad'),
+                    labelStyle: const TextStyle(color: Colors.deepPurple),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: placeForm.place!.address,
                 onChanged: (value) => placeForm.place!.address = value,
-                decoration: const InputDecoration(
-                  hintText: 'Direccion',
-                  labelText: 'Direccion:',
-                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Este campo es obligatorio';
+                  }
+                  return null;
+                },
+                cursorColor: Colors.deepPurple,
+                decoration: InputDecoration(
+                    hintText: 'Dirección',
+                    label: const Text('Dirección'),
+                    labelStyle: const TextStyle(color: Colors.deepPurple),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: placeForm.place!.neighborhood,
                 onChanged: (value) => placeForm.place!.neighborhood = value,
-                decoration: const InputDecoration(
-                  hintText: 'Barrio',
-                  labelText: 'Barrio:',
-                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Este campo es obligatorio';
+                  }
+                  return null;
+                },
+                cursorColor: Colors.deepPurple,
+                decoration: InputDecoration(
+                    hintText: 'Barrio',
+                    label: const Text('Barrio'),
+                    labelStyle: const TextStyle(color: Colors.deepPurple),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 10),
             ],
           ),
         ),

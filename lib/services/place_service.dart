@@ -37,7 +37,9 @@ class PlaceService extends ChangeNotifier {
 
     if (place.id == null) {
       await this.creatPlace(place);
-    } else {}
+    } else {
+      await this.updatePlace(place);
+    }
     isSaving = false;
     notifyListeners();
   }
@@ -65,6 +67,15 @@ class PlaceService extends ChangeNotifier {
     this.selectedPlace!.photo = path;
     this.newPhotoFile = File.fromUri(Uri(path: path));
     notifyListeners();
+  }
+
+  Future<String?> updatePlace(PlaceModel place) async {
+    final url = Uri.https(_baseUrl, 'place/${place.id}.json');
+    final resp = await http.put(url, body: place.toJson());
+    final decodedData = resp.body;
+    final index = this.places.indexWhere((element) => element.id == place.id);
+    this.places[index] = place;
+    return place.id!;
   }
 
   Future<String?> uploadImage() async {

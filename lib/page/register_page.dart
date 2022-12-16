@@ -44,6 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   _email = value;
                   print('El email es $_email');
                 },
+                cursorColor: Colors.deepPurple,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
                     hintText: 'Email',
@@ -62,6 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   _password = value;
                   print('El password es $_password');
                 },
+                cursorColor: Colors.deepPurple,
                 obscureText: true,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
@@ -81,6 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   _password2 = value;
                   print('El password es $_password');
                 },
+                cursorColor: Colors.deepPurple,
                 obscureText: true,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
@@ -151,13 +154,35 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 SizedBox(width: 10),
                                 Text(
-                                  'Digite todos los campos!',
+                                  'Invalid user or password!',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                               ],
                             )),
                           )));
                       }
+                    } else {
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(SnackBar(
+                            content: SizedBox(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          child: Center(
+                              child: Row(
+                            children: const [
+                              Icon(
+                                Icons.sms_failed,
+                                color: Colors.red,
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                'Password do not match!',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )),
+                        )));
                     }
 
                     // ignore: use_build_context_synchronously

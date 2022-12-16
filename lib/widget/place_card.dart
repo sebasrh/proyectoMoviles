@@ -21,7 +21,12 @@ class PlaceCard extends StatelessWidget {
             _BackgroundImage(place.photo),
             _PlaceDetails(
               ciudad: "Ciudad: ${place.city}",
-              precio: "Precio: ${place.price}",
+              telefono: "Telefono: ${place.numberPhone}",
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _PriceTag(precio: place.price),
             ),
             if (!place.available)
               Positioned(
@@ -67,8 +72,50 @@ class _NotAvailable extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             'No disponible',
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(fontSize: 16, color: Colors.white),
             overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PriceTag extends StatelessWidget {
+  final String precio;
+  const _PriceTag({required this.precio});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100,
+      height: 60,
+      decoration: const BoxDecoration(
+        color: Colors.deepPurple,
+        borderRadius: BorderRadius.only(
+          //topRight: Radius.circular(25),
+          topRight: Radius.circular(25),
+          bottomLeft: Radius.circular(25),
+        ),
+      ),
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              precio != ''
+                  ? Text(
+                      "COP $precio",
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  // ignore: prefer_const_constructors
+                  : Text(
+                      "COP 0",
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                      overflow: TextOverflow.ellipsis,
+                    )
+            ],
           ),
         ),
       ),
@@ -78,34 +125,39 @@ class _NotAvailable extends StatelessWidget {
 
 class _PlaceDetails extends StatelessWidget {
   final String ciudad;
-  final String precio;
-  const _PlaceDetails({required this.ciudad, required this.precio});
+  final String telefono;
+
+  const _PlaceDetails({required this.ciudad, required this.telefono});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: double.infinity,
-      height: 60,
-      decoration: const BoxDecoration(
-        color: Colors.deepPurple,
-        borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(25),
-          bottomLeft: Radius.circular(25),
-        ),
-      ),
-      child: Column(
-        children: [
-          Text(
-            ciudad,
-            style: const TextStyle(fontSize: 16, color: Colors.white),
-            overflow: TextOverflow.ellipsis,
+    return Padding(
+      padding: const EdgeInsets.only(right: 60),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        width: double.infinity,
+        height: 60,
+        decoration: const BoxDecoration(
+          color: Colors.deepPurple,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(25),
+            bottomLeft: Radius.circular(25),
           ),
-          Text(
-            precio,
-            style: const TextStyle(fontSize: 16, color: Colors.white),
-            overflow: TextOverflow.ellipsis,
-          )
-        ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              ciudad,
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              telefono,
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -119,14 +171,19 @@ class _BackgroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(25),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         height: 400,
-        child: FadeInImage(
-          placeholder: AssetImage('assets/jar-loading.gif'),
-          image: NetworkImage(url!),
-          fit: BoxFit.cover,
-        ),
+        child: url == null
+            ? const Image(
+                image: AssetImage('assets/no-image.png'),
+                fit: BoxFit.cover,
+              )
+            : FadeInImage(
+                placeholder: const AssetImage('assets/jar-loading.gif'),
+                image: NetworkImage(url!),
+                fit: BoxFit.cover,
+              ),
       ),
     );
   }
