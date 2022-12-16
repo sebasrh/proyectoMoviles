@@ -10,6 +10,7 @@ class PlacePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlacePage place;
+
     final placeService = Provider.of<PlaceService>(context);
 
     return ChangeNotifierProvider(
@@ -32,6 +33,7 @@ class _PlacePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final placeForm = Provider.of<PlaceFormProvider>(context);
+    bool isButtonPressed = true;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -70,9 +72,34 @@ class _PlacePageBody extends StatelessWidget {
 
           final String? imageUrl = await placeService.uploadImage();
 
-          if(imageUrl != null){placeForm.place!.photo = imageUrl;}
+          if (imageUrl != null) {
+            placeForm.place!.photo = imageUrl;
+          }
 
           await placeService.saveOrCreatePlace(placeForm.place!);
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+                content: SizedBox(
+              height: 50,
+              width: MediaQuery.of(context).size.width * 0.4,
+              child: Center(
+                  child: Row(
+                children: const [
+                  Icon(
+                    Icons.verified_user,
+                    color: Colors.green,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    'Apartament Created!',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              )),
+            )));
+
           Navigator.pushNamed(context, 'home_page');
         },
       ),

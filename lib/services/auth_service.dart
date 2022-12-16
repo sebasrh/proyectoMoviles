@@ -34,6 +34,4 @@ class AuthService extends ChangeNotifier {
 
     return resp.statusCode == 200;
   }
-
-  createUserTable() {}
 }

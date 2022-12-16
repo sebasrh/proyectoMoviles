@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'SeeRooms',
-        initialRoute: 'home_page',
+        initialRoute: 'login_page',
         routes: {
           'login_page': (BuildContext context) => LoginPage(),
           'register_page': (BuildContext context) => RegisterPage(),
