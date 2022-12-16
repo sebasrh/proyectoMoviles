@@ -33,9 +33,15 @@ class _PlacePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final placeForm = Provider.of<PlaceFormProvider>(context);
-    bool isButtonPressed = true;
 
     return Scaffold(
+      appBar: AppBar(
+        leading: const BackButton(),
+        backgroundColor: Colors.deepPurple,
+        titleTextStyle:
+            const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+        title: const Text('SeeRooms'),
+      ),
       body: SingleChildScrollView(
           child: Column(
         children: [
@@ -43,11 +49,19 @@ class _PlacePageBody extends StatelessWidget {
             children: [
               PlaceImage(url: placeService.selectedPlace!.photo),
               Positioned(
-                  top: 60,
-                  right: 20,
+                top: 20,
+                right: 20,
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.deepPurple,
                   child: IconButton(
+                    icon: const Icon(
+                      Icons.photo,
+                      color: Colors.white,
+                    ),
                     onPressed: () async {
-                      final picker = new ImagePicker();
+                      final picker = ImagePicker();
+
                       final PickedFile? pickedFile = await picker.getImage(
                           source: ImageSource.gallery, imageQuality: 100);
 
@@ -56,16 +70,42 @@ class _PlacePageBody extends StatelessWidget {
                       }
                       placeService.updateSelectedProductImage(pickedFile.path);
                     },
-                    icon: const Icon(Icons.camera_alt_outlined,
-                        size: 40, color: Colors.white),
-                  )),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 100,
+                right: 20,
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.deepPurple,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.camera_alt_outlined,
+                      color: Colors.white,
+                    ),
+                    onPressed: () async {
+                      final picker = ImagePicker();
+
+                      final PickedFile? pickedFile = await picker.getImage(
+                          source: ImageSource.camera, imageQuality: 100);
+
+                      if (pickedFile == null) {
+                        return;
+                      }
+                      placeService.updateSelectedProductImage(pickedFile.path);
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
           _PlaceForm(),
-          SizedBox(height: 100),
+          const SizedBox(height: 50),
         ],
       )),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepPurple,
         child: const Icon(Icons.save_outlined),
         onPressed: () async {
           if (!placeForm.isValidForm()) return;
@@ -74,6 +114,9 @@ class _PlacePageBody extends StatelessWidget {
 
           if (imageUrl != null) {
             placeForm.place!.photo = imageUrl;
+          } else {
+            placeForm.place!.photo =
+                'http://res.cloudinary.com/dgb26cwpx/image/upload/v1671170908/ko6jupcznbcd2e395msh.png';
           }
 
           await placeService.saveOrCreatePlace(placeForm.place!);
@@ -99,8 +142,6 @@ class _PlacePageBody extends StatelessWidget {
                 ],
               )),
             )));
-
-          Navigator.pushNamed(context, 'home_page');
         },
       ),
     );
@@ -182,7 +223,7 @@ class _PlaceForm extends StatelessWidget {
                   labelText: 'Barrio:',
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -190,9 +231,12 @@ class _PlaceForm extends StatelessWidget {
     );
   }
 
-  BoxDecoration _buildBoxDecoration() => BoxDecoration(
+  BoxDecoration _buildBoxDecoration() => const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(25), bottomLeft: Radius.circular(25)),
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+            bottomLeft: Radius.circular(30)),
       );
 }

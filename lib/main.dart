@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:seerooms/page/rent_page.dart';
 import 'package:seerooms/providers/place_provider.dart';
 import 'package:seerooms/services/services.dart';
 import 'page/page.dart';
@@ -37,10 +36,8 @@ class MyApp extends StatelessWidget {
         routes: {
           'login_page': (BuildContext context) => LoginPage(),
           'register_page': (BuildContext context) => RegisterPage(),
-          'rent_page': (BuildContext context) => RentPage(),
           'home_page': (BuildContext context) => HomePage(),
           'place_page': (BuildContext context) => PlacePage(),
-          'offer_page': (BuildContext context) => OfferPage(),
         });
   }
 }

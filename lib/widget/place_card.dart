@@ -51,21 +51,26 @@ class _NotAvailable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 100,
+      height: 60,
+      decoration: const BoxDecoration(
+        color: Colors.deepOrange,
+        borderRadius: BorderRadius.only(
+          //topRight: Radius.circular(25),
+          topLeft: Radius.circular(25),
+          bottomRight: Radius.circular(25),
+        ),
+      ),
       child: const FittedBox(
         fit: BoxFit.contain,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Text(
             'No disponible',
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            style: TextStyle(fontSize: 20, color: Colors.white),
             overflow: TextOverflow.ellipsis,
           ),
         ),
-      ),
-      width: 100,
-      height: 60,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 255, 165, 97),
       ),
     );
   }
@@ -80,18 +85,24 @@ class _PlaceDetails extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       width: double.infinity,
-      height: 70,
-      color: const Color(0xFFFFFB00),
+      height: 60,
+      decoration: const BoxDecoration(
+        color: Colors.deepPurple,
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(25),
+          bottomLeft: Radius.circular(25),
+        ),
+      ),
       child: Column(
         children: [
           Text(
             ciudad,
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            style: const TextStyle(fontSize: 16, color: Colors.white),
             overflow: TextOverflow.ellipsis,
           ),
           Text(
             precio,
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            style: const TextStyle(fontSize: 16, color: Colors.white),
             overflow: TextOverflow.ellipsis,
           )
         ],

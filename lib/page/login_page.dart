@@ -38,8 +38,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               TextField(
-                enableInteractiveSelection: false,
-                autofocus: false,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
                     hintText: 'Email',
@@ -58,8 +56,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               TextField(
-                enableInteractiveSelection: false,
-                autofocus: false,
                 obscureText: true,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
@@ -147,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                     //Navigator.pushNamed(context, 'offer_page');
                   },
                   child: const Text(
-                    'Sing in',
+                    'Sign in',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

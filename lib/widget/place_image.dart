@@ -10,14 +10,18 @@ class PlaceImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
       child: Container(
         decoration: _buildBoxDecoration(),
         width: double.infinity,
-        height: 450,
+        height: 400,
         child: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(45), topRight: Radius.circular(45)),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+            bottomLeft: Radius.circular(30),
+            bottomRight: Radius.circular(30),
+          ),
           child: getImage(url),
         ),
       ),
@@ -26,7 +30,11 @@ class PlaceImage extends StatelessWidget {
 
   BoxDecoration _buildBoxDecoration() => const BoxDecoration(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(45), topRight: Radius.circular(45)),
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
       );
 
   Widget getImage(String? photo) {

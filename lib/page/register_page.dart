@@ -14,140 +14,164 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   String _email = '';
   String _password = '';
+  String _password2 = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFB00),
+      backgroundColor: Colors.white,
       body: ListView(
         padding: const EdgeInsets.symmetric(
-          horizontal: 30.0,
-          vertical: 90.0,
+          horizontal: 40.0,
+          vertical: 100.0,
         ),
         children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 100.0,
-                backgroundImage: AssetImage('images/logo.png'),
+              const Image(
+                image: AssetImage('images/seerooms.png'),
+                width: 150.0,
+                height: 150.0,
               ),
+              const SizedBox(height: 50),
               const Text(
-                'Crear cuenta',
-                style: TextStyle(fontFamily: 'IMFellEnglish', fontSize: 50.0),
+                'Register account',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
               ),
+              const SizedBox(height: 10),
               TextField(
                 onChanged: (value) {
                   _email = value;
                   print('El email es $_email');
                 },
-                enableInteractiveSelection: false,
-                autofocus: true,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
                     hintText: 'Email',
-                    suffixIcon: const Icon(Icons.verified_rounded),
+                    prefixIcon:
+                        const Icon(Icons.email_outlined, color: Colors.grey),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0))),
-                onSubmitted: (valor) {},
               ),
-              const Divider(
-                height: 18.0,
-              ),
+              const SizedBox(height: 10),
               TextField(
                 onChanged: (value) {
                   _password = value;
                   print('El password es $_password');
                 },
-                enableInteractiveSelection: false,
-                autofocus: true,
                 obscureText: true,
                 style: const TextStyle(fontFamily: 'Lato'),
                 decoration: InputDecoration(
                     hintText: 'Password',
-                    suffixIcon: const Icon(Icons.security_rounded),
+                    prefixIcon:
+                        const Icon(Icons.key_outlined, color: Colors.grey),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0))),
-                onSubmitted: (valor) {},
               ),
-              const Divider(
-                height: 18.0,
+              const SizedBox(height: 10),
+              TextField(
+                onChanged: (value) {
+                  _password2 = value;
+                  print('El password es $_password');
+                },
+                obscureText: true,
+                style: const TextStyle(fontFamily: 'Lato'),
+                decoration: InputDecoration(
+                    hintText: 'Repeat password',
+                    prefixIcon:
+                        const Icon(Icons.key_outlined, color: Colors.grey),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.deepPurple, width: 2.0),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
               ),
-              const Divider(
-                height: 18.0,
-              ),
+              const SizedBox(height: 10),
               SizedBox(
-                width: double.infinity,
+                width: 200,
+                height: 60.0,
                 child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
-                  ),
+                  style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 50),
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.deepPurple,
+                      shape: const StadiumBorder()),
                   onPressed: () async {
                     final authService =
                         Provider.of<AuthService>(context, listen: false);
+                    if (_password == _password2) {
+                      if (await authService.createUser(_email, _password)) {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                              content: SizedBox(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: Center(
+                                child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.verified_user,
+                                  color: Colors.green,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'User Created!',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )),
+                          )));
 
-                    if (await authService.createUser(_email, _password)) {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(SnackBar(
-                            content: SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: Center(
-                              child: Row(
-                            children: const [
-                              Icon(
-                                Icons.verified_user,
-                                color: Colors.green,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'User Created!',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          )),
-                        )));
-
-                      final route = MaterialPageRoute(
-                          builder: (context) => const HomePage());
-                      Navigator.pushReplacement(context, route);
-                    } else {
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(SnackBar(
-                            content: SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: Center(
-                              child: Row(
-                            children: const [
-                              Icon(
-                                Icons.sms_failed,
-                                color: Colors.red,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Digite todos los campos!',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          )),
-                        )));
+                        final route = MaterialPageRoute(
+                            builder: (context) => const HomePage());
+                        Navigator.pushReplacement(context, route);
+                      } else {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                              content: SizedBox(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: Center(
+                                child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.sms_failed,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Digite todos los campos!',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )),
+                          )));
+                      }
                     }
+
                     // ignore: use_build_context_synchronously
                   },
                   child: const Text(
-                    'Crear',
+                    'Register',
                     style: TextStyle(
-                      color: Color(0xFFFFFB00),
-                      fontFamily: 'Lato',
-                      fontSize: 30.0,
-                    ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0),
                   ),
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               TextButton(
                   onPressed: () {
                     final route = MaterialPageRoute(
@@ -158,9 +182,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       overlayColor: MaterialStateProperty.all(
                           Colors.black.withOpacity(0.1))),
                   child: const Text(
-                    '¿Ya tienes una cuenta?',
+                    'Already have an account?',
                     style: TextStyle(
-                        fontSize: 18, fontFamily: 'Lato', color: Colors.black),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple),
                   )),
             ],
           )

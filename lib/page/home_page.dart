@@ -13,37 +13,46 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final placeService = Provider.of<PlaceService>(context);
 
-    if (placeService.isLoading) return LoadingPage();
+    if (placeService.isLoading) return const LoadingPage();
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFFFB00),
+        
+        backgroundColor: Colors.deepPurple,
         titleTextStyle:
-            const TextStyle(fontFamily: 'Lato', color: Colors.black),
-        title: Text('SeeRooms'),
-        leading: IconButton(
-          icon: const Icon(Icons.login_outlined, color: Colors.black),
-          onPressed: () {
-            final route =
-                MaterialPageRoute(builder: (context) => const LoginPage());
-            Navigator.pushReplacement(context, route);
-          },
-        ),
+            const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+        title: const Text('SeeRooms'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              final route =
+                  MaterialPageRoute(builder: (context) => const LoginPage());
+              Navigator.pushReplacement(context, route);
+            },
+            child: const Text(
+              'Sign out',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0,
+                  color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: placeService.places.length,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
           onTap: () {
             placeService.selectedPlace = placeService.places[index].copy();
-            Navigator.pushNamed(context, 'offer_page');
+            Navigator.pushNamed(context, 'place_page');
           },
           child: PlaceCard(place: placeService.places[index]),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFFFFFB00),
+        backgroundColor: Colors.deepPurple,
         onPressed: () {
-          placeService.selectedPlace = new PlaceModel(
+          placeService.selectedPlace = PlaceModel(
               address: '',
               available: true,
               city: '',
@@ -54,7 +63,7 @@ class HomePage extends StatelessWidget {
               price: '');
           Navigator.pushNamed(context, 'place_page');
         },
-        child: const Icon(Icons.add, color: Colors.black),
+        child: const Icon(Icons.add),
       ),
     );
   }
